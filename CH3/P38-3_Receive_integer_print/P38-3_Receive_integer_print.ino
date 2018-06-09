@@ -1,11 +1,17 @@
 /*
-*P38-
+*P38-3
 *從Arduino板接收傳腦傳送的訊息，並於Serial Monitor視窗顯示所接收的數字
 *須可接收與顯示 -32768以上到32767以下的數字。
 */
 
-char c = '\n';
+/*
+*!!!!!!一定要用 \n 結尾!!!!!!*
+*/
+
+char c = '0';
 int n = 0;
+
+bool negative = 0; //
 
 void setup()
 {
@@ -16,14 +22,26 @@ void loop()
 {
 	if(Serial.available() > 0)
 	{
-		if(c != '\r')
+		while((c = Serial.read())!= '\n') //判斷是否已結束輸入
 		{
-			c = Serial.read();
 			Serial.print("Received:");
 			Serial.println(c);
+			if(c == '-')
+			{
+				negative = 1;
+				c = '0'; //drop '-' operator
+			}
+			n = n*10+(int)(c-'0');
+			delay(10);
+		}
+		if(negative)
+		{
+			n *= -1;
+			negative = 0;
 		}
 		Serial.print("Total:");
 		Serial.println(n);
+		n = 0;
 	}
 	
 }

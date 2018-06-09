@@ -19,7 +19,7 @@ void setup()
 void loop()
 {
 	unsigned long now = millis();
-	if(now-last_blink > BLINK_INTERVAL) //每隔固定時間檢查是否需要閃爍
+	if(now-last_blink >= BLINK_INTERVAL) //每隔固定時間檢查是否需要閃爍
 	{
 		digitalWrite(led, led_state & !digitalRead(sw)); //只有在led_state和sw都是1的時候才閃爍
 		last_blink = now; //更新最後一次執行時間
