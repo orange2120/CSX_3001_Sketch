@@ -19,6 +19,9 @@ uint8_t starBeat[] = {1,1,1,1,1,1,2,1,1,1,1,1,1,2,1,1,1,1,1,1,2,1,1,1,1,1,1,2,1,
 char beeTone[] = "GEEFDDCDEFGGGGEEFDDCEGGEDDDDDEFEEEEEFGGEEFDDCEGGC";
 uint8_t beeBeat[] = {1,1,2,1,1,2,1,1,1,1,1,1,2,1,1,2,1,1,2,1,1,1,1,2,1,1,1,1,1,1,2,1,1,1,1,1,1,2,1,1,2,1,1,2,1,1,1,1,2};
 
+char sheepTone[] = "EDCDEEE DDD EGG EDCDEEE DDEDC";
+uint8_t sheepBeat[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2};
+
 int music_index = 0; //0=mute(default), 1=Little Bee,2=Little Star,3=?
 int last_music_index = 0; //Record last played music index
 
@@ -41,12 +44,10 @@ void loop()
 	if(dist >= 1 && dist <= 5)
 	{
 		music_index = 1;
-		remain_beats = sizeof(beeTone);
 	}
 	else if(dist >5 && dist <= 10)
 	{
 		music_index = 2;
-		remain_beats = sizeof(starTone);
 	}
 	else if(dist > 10)
 	{
@@ -59,7 +60,7 @@ void loop()
 	
 	if(music_index != last_music_index)
 	{
-		beats_num = 0;
+		set_music(music_index);
 		last_music_index = music_index;
 	}
 	
@@ -77,9 +78,20 @@ void loop()
 				beats_num++;
 				remain_beats--;
 			break;
+			case 3:
+				playTone(sheepTone[beats_num], sheepBeat[beats_num]);
+				beats_num++;
+				remain_beats--;
+			break;
+			default:
+				noTone(speaker_pin);
+			break;
 		}
 	}
-	else noTone(speaker_pin);
+	else
+	{
+		set_music(music_index);
+	}
 }
 
 long ping(void)
@@ -92,6 +104,28 @@ long ping(void)
 	return pulseIn(ECHO_PIN, HIGH)/58;
 }
 
+void set_music(int index)
+{
+	beats_num = -1;
+	switch(index)
+	{
+		default:
+			noTone(speaker_pin);
+		break;
+		case 1:
+			remain_beats = sizeof(beeTone)/sizeof(char);
+		break;
+		case 2:
+			remain_beats = sizeof(starTone)/sizeof(char);
+		break;
+		case 3:
+			remain_beats = sizeof(sheepTone)/sizeof(char);
+		break;
+	}
+	
+
+}
+
 void playTone(char toneNo, uint8_t beatNo)
 {
 	unsigned long duration=beatNo*60000/tempo;
@@ -100,10 +134,9 @@ void playTone(char toneNo, uint8_t beatNo)
 		if(toneNo == toneName[j])
 		{
 			tone(speaker_pin, tones[j]);
-			digitalWrite(led[j], HIGH);
+			Serial.println(duration);
 			delay(duration);
 		}
 		noTone(speaker_pin);
-		digitalWrite(led[j], LOW);
 	}
 }

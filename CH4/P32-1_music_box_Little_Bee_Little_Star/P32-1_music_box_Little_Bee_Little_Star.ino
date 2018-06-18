@@ -40,21 +40,9 @@ void loop()
 		delay(20); //debounce
 		while(digitalRead(sw_pin)==0);
 		music_index++;
-		if(music_index>2) music_index = 0;
-		
-		beats_num = 0;
-		switch(music_index)
-		{
-			case 0:
-				remain_beats = 0;
-			break;
-			case 1:
-				remain_beats = sizeof(beeTone);
-			break;
-			case 2:
-				remain_beats = sizeof(starTone);
-			break;
-		}
+		if(music_index > 2) music_index = 0;
+
+		set_music(music_index);
 	}
 	
 	if(remain_beats > 0)
@@ -62,6 +50,7 @@ void loop()
 		switch(music_index)
 		{
 			case 1:
+				
 				playTone(beeTone[beats_num], beeBeat[beats_num]);
 				beats_num++;
 				remain_beats--;
@@ -73,7 +62,30 @@ void loop()
 			break;
 		}
 	}
-	else noTone(speaker_pin);
+	else
+	{
+		set_music(music_index);
+	}
+}
+
+void set_music(int index)
+{
+	beats_num = -1;
+	switch(index)
+		{
+			default:
+				remain_beats = 0;
+			break;
+			case 0:
+				remain_beats = 0;
+			break;
+			case 1:
+				remain_beats = sizeof(beeTone);
+			break;
+			case 2:
+				remain_beats = sizeof(starTone);
+			break;
+		}
 }
 
 void playTone(char toneNo, uint8_t beatNo)
