@@ -41,7 +41,7 @@ void loop()
 {
 	for(int i=0;i<6;i++)
 	{
-		for(int j=0;j<=16;j++)
+		for(int j=0;j<16;j++)
 		{
 			lcd.setCursor(j,0);
 			lcd.write(byte(i));
