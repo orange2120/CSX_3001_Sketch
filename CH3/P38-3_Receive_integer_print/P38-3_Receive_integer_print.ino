@@ -1,13 +1,12 @@
 /*
 *P38-3
-*±qArduinoªO±µ¦¬¶Ç¸£¶Ç°eªº°T®§¡A¨Ã©óSerial Monitorµøµ¡Åã¥Ü©Ò±µ¦¬ªº¼Æ¦r
-*¶·¥i±µ¦¬»PÅã¥Ü -32768¥H¤W¨ì32767¥H¤Uªº¼Æ¦r¡C
+*å¾Arduinoæ¿æ¥æ”¶å‚³è…¦å‚³é€çš„è¨Šæ¯ï¼Œä¸¦æ–¼Serial Monitorè¦–çª—é¡¯ç¤ºæ‰€æ¥æ”¶çš„æ•¸å­—
+*é ˆå¯æ¥æ”¶èˆ‡é¡¯ç¤º -32768ä»¥ä¸Šåˆ°32767ä»¥ä¸‹çš„æ•¸å­—ã€‚
 */
 
 /*
-*!!!!!!¤@©w­n¥Î \n µ²§À!!!!!!*
+*!!!!!!ä¸€å®šè¦ç”¨ \n çµå°¾!!!!!!*
 */
-
 char c = '0';
 int n = 0;
 
@@ -22,7 +21,7 @@ void loop()
 {
 	if(Serial.available() > 0)
 	{
-		while((c = Serial.read())!= '\n') //§PÂ_¬O§_¤wµ²§ô¿é¤J
+		while((c = Serial.read())!= '\n') //åˆ¤æ–·æ˜¯å¦å·²çµæŸè¼¸å…¥
 		{
 			Serial.print("Received:");
 			Serial.println(c);
@@ -42,6 +41,5 @@ void loop()
 		Serial.print("Total:");
 		Serial.println(n);
 		n = 0;
-	}
-	
+	}	
 }
